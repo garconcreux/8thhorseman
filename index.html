@@ -2,3526 +2,1774 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-
-<meta name="viewport"
-      content="width=device-width,
-               initial-scale=1,
-               maximum-scale=1,
-               user-scalable=no">
-
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>8thhorseman</title>
 
-<link rel="icon"
-      type="image/svg+xml"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23000'/%3E%3C/svg%3E">
-
 <style>
-
 * {
-    box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html,
 body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    min-height: 100%;
-
-    background: #fff;
-    color: #111;
-
-    font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "SF Pro Display",
-        "SF Pro Text",
-        Helvetica,
-        Arial,
-        sans-serif;
+  margin: 0;
+  width: 100%;
+  min-height: 100%;
+  background: #000;
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+    "SF Pro Text", Helvetica, Arial, sans-serif;
 }
 
 body {
-    overflow-x: hidden;
-
-    user-select: none;
-    -webkit-user-select: none;
-}
-
-button,
-select {
-    font: inherit;
+  overflow-x: hidden;
 }
 
 button {
-    cursor: pointer;
+  font: inherit;
 }
 
 .screen {
-    display: none;
-
-    width: 100%;
-    min-height: 100vh;
-
-    padding: 24px;
+  display: none;
+  min-height: 100vh;
+  width: 100%;
+  padding:
+    max(20px, env(safe-area-inset-top))
+    max(18px, env(safe-area-inset-right))
+    max(24px, env(safe-area-inset-bottom))
+    max(18px, env(safe-area-inset-left));
 }
 
 .screen.active {
-    display: flex;
-    flex-direction: column;
+  display: flex;
 }
 
 .center {
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
-
-/* ==================================================
-   LOGO
-================================================== */
-
-.home-logo,
-.top-logo {
-    font-size: 17px;
-    font-weight: 600;
-    letter-spacing: -.45px;
+.logo {
+  position: fixed;
+  top: max(18px, env(safe-area-inset-top));
+  left: 20px;
+  z-index: 10000;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+  user-select: none;
+  cursor: default;
 }
 
-.home-logo {
-    position: absolute;
-    top: 24px;
-    left: 24px;
+h1 {
+  margin: 0 0 12px;
+  font-size: clamp(30px, 7vw, 54px);
+  line-height: 1;
+  letter-spacing: -2px;
+  font-weight: 700;
 }
 
-
-/* ==================================================
-   HOME
-================================================== */
-
-.home-content {
-    width: 100%;
-    max-width: 520px;
+.subtitle {
+  margin: 0;
+  max-width: 440px;
+  color: #8d8d93;
+  font-size: 15px;
+  line-height: 1.55;
 }
 
-.home-title {
-    margin: 0;
-
-    font-size: clamp(48px, 13vw, 82px);
-    line-height: .88;
-
-    letter-spacing: -5px;
-    font-weight: 700;
+.primary-btn,
+.secondary-btn {
+  appearance: none;
+  border: 0;
+  cursor: pointer;
+  border-radius: 999px;
+  min-height: 48px;
+  padding: 0 24px;
+  margin-top: 28px;
+  font-size: 15px;
+  font-weight: 600;
+  transition:
+    transform .15s ease,
+    opacity .15s ease,
+    background .15s ease;
 }
 
-.home-subtitle {
-    margin: 22px 0 0;
-
-    color: #777;
-    font-size: 15px;
+.primary-btn {
+  background: #fff;
+  color: #000;
 }
 
-.primary-button {
-    min-height: 50px;
-
-    margin-top: 38px;
-    padding: 15px 28px;
-
-    border: 0;
-    border-radius: 999px;
-
-    background: #111;
-    color: #fff;
-
-    font-size: 15px;
-    font-weight: 600;
-
-    touch-action: manipulation;
+.secondary-btn {
+  background: #181818;
+  color: #fff;
+  border: 1px solid #292929;
 }
 
-.primary-button:active {
-    transform: scale(.97);
+.primary-btn:active,
+.secondary-btn:active {
+  transform: scale(.97);
 }
 
-
-/* ==================================================
-   GENERAL
-================================================== */
-
-.heading {
-    margin: 0;
-
-    font-size: clamp(34px, 8vw, 54px);
-    line-height: .95;
-
-    letter-spacing: -3px;
-    font-weight: 700;
+.primary-btn:disabled,
+.secondary-btn:disabled {
+  opacity: .35;
+  cursor: default;
 }
 
-.description {
-    max-width: 430px;
-
-    margin: 15px auto 0;
-
-    color: #777;
-
-    font-size: 14px;
-    line-height: 1.5;
+.choice-count {
+  display: grid;
+  grid-template-columns: repeat(4, 58px);
+  gap: 10px;
+  margin-top: 30px;
 }
 
-.small-button {
-    min-height: 46px;
-
-    padding: 13px 21px;
-
-    border: 0;
-    border-radius: 999px;
-
-    background: #111;
-    color: #fff;
-
-    font-size: 14px;
-    font-weight: 600;
-
-    touch-action: manipulation;
+.count-btn {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  border: 1px solid #292929;
+  background: #090909;
+  color: #fff;
+  cursor: pointer;
+  font-size: 17px;
+  transition: .15s ease;
 }
 
-.secondary-button {
-    min-height: 46px;
-
-    padding: 13px 21px;
-
-    border: 1px solid #ddd;
-    border-radius: 999px;
-
-    background: #fff;
-    color: #111;
-
-    font-size: 14px;
-    font-weight: 600;
-
-    touch-action: manipulation;
+.count-btn.selected {
+  background: #fff;
+  color: #000;
+  border-color: #fff;
 }
 
-.button-row {
-    display: flex;
-
-    justify-content: center;
-    align-items: center;
-
-    flex-wrap: wrap;
-
-    gap: 10px;
-
-    margin-top: 28px;
+.top-info {
+  width: 100%;
+  text-align: center;
+  padding-top: 40px;
 }
 
-
-/* ==================================================
-   NUMBER
-================================================== */
-
-.number-grid {
-    display: flex;
-
-    flex-wrap: wrap;
-
-    justify-content: center;
-
-    gap: 10px;
-
-    max-width: 400px;
-
-    margin: 34px auto 0;
+.top-info h2 {
+  margin: 0;
+  font-size: 22px;
+  letter-spacing: -.7px;
 }
 
-.number-button {
-    width: 56px;
-    height: 56px;
-
-    border: 1px solid #ddd;
-
-    border-radius: 50%;
-
-    background: #fff;
-    color: #111;
-
-    font-size: 17px;
-    font-weight: 600;
-
-    touch-action: manipulation;
+.top-info p {
+  margin: 8px auto 0;
+  color: #777;
+  font-size: 13px;
 }
 
-.number-button:active {
-    background: #111;
-    color: #fff;
+/* Secret setup */
+
+.secret-box {
+  width: min(460px, 92vw);
+  margin-top: 30px;
+  padding: 22px;
+  border-radius: 18px;
+  background: #0a0a0a;
+  border: 1px solid #181818;
 }
 
-
-/* ==================================================
-   SETUP
-================================================== */
-
-.setup-list {
-    width: 100%;
-    max-width: 500px;
-
-    margin: 30px auto 0;
+.secret-number {
+  color: #777;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1.4px;
 }
 
-.setup-row {
-    display: grid;
-
-    grid-template-columns:
-        115px
-        1fr;
-
-    align-items: center;
-
-    gap: 15px;
-
-    padding: 12px 0;
-
-    border-bottom: 1px solid #eee;
+.secret-name {
+  margin-top: 9px;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -1px;
 }
 
-.setup-number {
-    color: #999;
-
-    font-size: 13px;
-
-    text-align: left;
+.secret-note {
+  margin-top: 10px;
+  color: #666;
+  font-size: 13px;
+  line-height: 1.5;
 }
 
-.name-select {
-    width: 100%;
+/* Card stage */
 
-    min-height: 45px;
-
-    padding: 0 13px;
-
-    border: 1px solid #ddd;
-
-    border-radius: 10px;
-
-    background: #fff;
-    color: #111;
-
-    outline: none;
+.card-screen {
+  flex-direction: column;
+  align-items: center;
+  padding-top: 54px;
 }
 
-
-/* ==================================================
-   PLAYING CARD
-================================================== */
-
-/*
-   Slightly taller than before.
-*/
-
-.card {
-    position: relative;
-
-    width: 82px;
-    height: 124px;
-
-    flex-shrink: 0;
-
-    overflow: hidden;
-
-    border: 1px solid #d0d0d0;
-
-    border-radius: 9px;
-
-    background: #fff;
-
-    box-shadow:
-        0 2px 7px rgba(0,0,0,.12);
-
-    color: #111;
-
-    /*
-       Important for mobile dragging.
-    */
-    touch-action: none;
-
-    -webkit-user-drag: none;
+.card-stage {
+  position: relative;
+  width: min(720px, 96vw);
+  height: min(570px, calc(100vh - 135px));
+  min-height: 430px;
+  margin-top: 22px;
+  overflow: hidden;
+  touch-action: none;
 }
 
-.card.red {
-    color: #c51e1e;
+.playing-card {
+  position: absolute;
+  width: 104px;
+  height: 150px;
+  border-radius: 9px;
+  background: #fff;
+  color: #111;
+  border: 1px solid #d8d8d8;
+  box-shadow: 0 7px 18px rgba(0,0,0,.32);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  cursor: grab;
+  overflow: hidden;
+  transition:
+    box-shadow .15s ease,
+    transform .15s ease;
 }
 
-.card.black {
-    color: #111;
+.playing-card:active {
+  cursor: grabbing;
 }
 
-.card-rank {
-    position: absolute;
-
-    top: 8px;
-    left: 9px;
-
-    font-size: 15px;
-    font-weight: 700;
-
-    line-height: 1;
+.playing-card.selected {
+  z-index: 1000 !important;
+  box-shadow:
+    0 0 0 2px #fff,
+    0 12px 28px rgba(0,0,0,.5);
+  transform: scale(1.035);
 }
 
-.card-suit {
-    position: absolute;
+.card-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  padding: 8px;
+}
 
-    top: 25px;
-    left: 9px;
+.card-corner {
+  position: absolute;
+  left: 9px;
+  top: 7px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: .88;
+  font-weight: 700;
+  font-size: 16px;
+}
 
-    font-size: 13px;
-
-    line-height: 1;
+.card-corner.bottom {
+  left: auto;
+  top: auto;
+  right: 9px;
+  bottom: 7px;
+  transform: rotate(180deg);
 }
 
 .card-center {
-    position: absolute;
-
-    top: 50%;
-    left: 50%;
-
-    transform:
-        translate(-50%, -50%);
-
-    font-size: 34px;
-
-    line-height: 1;
+  position: absolute;
+  inset: 28px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 50px;
+  line-height: 1;
 }
 
-.card-rank-bottom {
-    position: absolute;
-
-    right: 9px;
-    bottom: 8px;
-
-    font-size: 15px;
-    font-weight: 700;
-
-    line-height: 1;
-
-    transform:
-        rotate(180deg);
+.red {
+  color: #b00020;
 }
 
-.card-suit-bottom {
-    position: absolute;
-
-    right: 9px;
-    bottom: 25px;
-
-    font-size: 13px;
-
-    line-height: 1;
-
-    transform:
-        rotate(180deg);
+.black {
+  color: #111;
 }
 
-
-/* ==================================================
-   CARD TOUCH / DRAG
-================================================== */
-
-.card.dragging {
-    z-index: 999;
-
-    box-shadow:
-        0 15px 30px rgba(0,0,0,.22);
-
-    transition: none;
+.joker-mark {
+  font-size: 39px;
 }
 
-
-/* ==================================================
-   CHOICE AREA
-================================================== */
-
-.choice-area {
-
-    position: relative;
-
-    width:
-        min(96vw, 570px);
-
-    height: 330px;
-
-    margin: 28px auto 0;
-
-    /*
-       Cards are allowed to be touched
-       individually.
-    */
-    touch-action: none;
-}
-
-
-/*
-   Cards now overlap much more.
-   They look like one joined pile.
-*/
-
-.choice-card {
-
-    position: absolute;
-
-    top: 50%;
-    left: 50%;
-
-    width: 82px;
-    height: 124px;
-
-    margin-left: -41px;
-    margin-top: -62px;
-
-    transition:
-        transform .3s
-        cubic-bezier(.2,.8,.2,1);
-
-    touch-action: none;
-
-    cursor: grab;
-}
-
-.choice-card:active {
-    cursor: grabbing;
-}
-
-
-/*
-   Only tiny horizontal separation.
-*/
-
-.choice-card:nth-child(1) {
-    transform:
-        translateX(-31px)
-        rotate(-2.5deg);
-
-    z-index: 1;
-}
-
-.choice-card:nth-child(2) {
-    transform:
-        translateX(-24px)
-        rotate(-2deg);
-
-    z-index: 2;
-}
-
-.choice-card:nth-child(3) {
-    transform:
-        translateX(-17px)
-        rotate(-1.5deg);
-
-    z-index: 3;
-}
-
-.choice-card:nth-child(4) {
-    transform:
-        translateX(-9px)
-        rotate(-.7deg);
-
-    z-index: 4;
-}
-
-.choice-card:nth-child(5) {
-    transform:
-        translateX(-1px)
-        rotate(.5deg);
-
-    z-index: 5;
-}
-
-.choice-card:nth-child(6) {
-    transform:
-        translateX(7px)
-        rotate(1deg);
-
-    z-index: 6;
-}
-
-.choice-card:nth-child(7) {
-    transform:
-        translateX(15px)
-        rotate(1.5deg);
-
-    z-index: 7;
-}
-
-.choice-card:nth-child(8) {
-    transform:
-        translateX(23px)
-        rotate(2.5deg);
-
-    z-index: 8;
-}
-
-
-/*
-   Selected card comes forward.
-*/
-
-.choice-card.selected {
-    z-index: 500;
-
-    transform:
-        translate(-50%, -50%)
-        translateY(-48px)
-        scale(1.08) !important;
-
-    cursor: default;
-}
-
-.choice-card.selected .card {
-    box-shadow:
-        0 14px 30px rgba(0,0,0,.23);
-}
-
-
-/* ==================================================
-   HIDE
-================================================== */
-
-.hide-area {
-    margin-top: 10px;
-}
-
-.hide-message {
-    font-size: 19px;
-    font-weight: 600;
-}
-
-
-/* ==================================================
-   PERFORMANCE
-================================================== */
+/* Performance */
 
 .performance-screen {
-    position: relative;
-
-    overflow: hidden;
-
-    background: #000;
-    color: #fff;
+  position: relative;
+  padding-top: 54px;
+  padding-bottom: 18px;
+  overflow: hidden;
 }
 
-.performance-screen .top-logo {
-    color: #fff;
+.performance-header {
+  width: 100%;
+  text-align: center;
+  flex: 0 0 auto;
 }
 
-.performance-content {
-    position: relative;
-
-    z-index: 5;
-
-    width: 100%;
-
-    text-align: center;
+.performance-header h2 {
+  margin: 0;
+  font-size: 21px;
+  letter-spacing: -.7px;
 }
 
-.performance-title {
-    margin: 0;
-
-    font-size:
-        clamp(30px, 8vw, 47px);
-
-    line-height: 1;
-
-    letter-spacing: -2.5px;
+.performance-header p {
+  margin: 7px 0 0;
+  color: #666;
+  font-size: 12px;
 }
 
-.deck-area {
-
-    position: relative;
-
-    width: 290px;
-    height: 230px;
-
-    margin: 30px auto 0;
-
-    touch-action: none;
+.performance-stage {
+  position: relative;
+  width: min(760px, 96vw);
+  height: min(600px, calc(100vh - 135px));
+  min-height: 470px;
+  margin: 18px auto 0;
+  overflow: hidden;
+  touch-action: none;
+  flex: 1 1 auto;
 }
-
-
-/*
-   Performer deck also uses larger cards.
-*/
 
 .deck-card {
-
-    position: absolute;
-
-    top: 50%;
-    left: 50%;
-
-    width: 82px;
-    height: 124px;
-
-    margin-left: -41px;
-    margin-top: -62px;
-
-    touch-action: none;
-
-    cursor: grab;
+  position: absolute;
+  width: 104px;
+  height: 150px;
+  border-radius: 9px;
+  background: #fff;
+  color: #111;
+  border: 1px solid #d8d8d8;
+  box-shadow: 0 7px 18px rgba(0,0,0,.34);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  cursor: grab;
+  overflow: hidden;
 }
 
-
-/*
-   Extremely compact deck.
-*/
-
-.deck-card:nth-child(1) {
-    transform:
-        translateX(-17px)
-        rotate(-3.5deg);
+.deck-card:active {
+  cursor: grabbing;
 }
 
-.deck-card:nth-child(2) {
-    transform:
-        translateX(-14px)
-        rotate(-3deg);
+.deck-card.dragging {
+  z-index: 5000 !important;
+  box-shadow: 0 13px 30px rgba(0,0,0,.55);
 }
 
-.deck-card:nth-child(3) {
-    transform:
-        translateX(-11px)
-        rotate(-2.5deg);
+.deck-card .card-center {
+  font-size: 50px;
 }
 
-.deck-card:nth-child(4) {
-    transform:
-        translateX(-8px)
-        rotate(-2deg);
+.shuffle-btn {
+  position: fixed;
+  right: 18px;
+  top: max(16px, env(safe-area-inset-top));
+  z-index: 10000;
+  height: 38px;
+  padding: 0 15px;
+  border-radius: 999px;
+  border: 1px solid #252525;
+  background: #080808;
+  color: #aaa;
+  font-size: 12px;
+  cursor: pointer;
 }
 
-.deck-card:nth-child(5) {
-    transform:
-        translateX(-4px)
-        rotate(-1deg);
-}
-
-.deck-card:nth-child(6) {
-    transform:
-        translateX(0)
-        rotate(0deg);
-}
-
-.deck-card:nth-child(7) {
-    transform:
-        translateX(4px)
-        rotate(1deg);
-}
-
-.deck-card:nth-child(8) {
-    transform:
-        translateX(8px)
-        rotate(2deg);
-}
-
-.deck-card:nth-child(9) {
-    transform:
-        translateX(11px)
-        rotate(2.5deg);
-}
-
-.deck-card:nth-child(10) {
-    transform:
-        translateX(14px)
-        rotate(3deg);
-}
-
-.shuffle-button {
-    position: relative;
-
-    z-index: 20;
-
-    min-height: 46px;
-
-    padding: 13px 23px;
-
-    border: 1px solid #333;
-
-    border-radius: 999px;
-
-    background: #111;
-    color: #fff;
-
-    font-size: 14px;
-    font-weight: 600;
-
-    touch-action: manipulation;
-}
-
-
-/*
-   Background tap zone.
-*/
-
-.black-click-zone {
-
-    position: fixed;
-
-    inset: 0;
-
-    z-index: 1;
-
-    cursor: pointer;
-}
-
-.black-click-zone.disabled {
-    pointer-events: none;
-}
-
-
-/* ==================================================
-   WRONG CARD
-================================================== */
+/* Wrong card */
 
 .wrong-screen {
-
-    position: relative;
-
-    overflow: hidden;
-
-    background: #000;
-
-    color: #fff;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
-.wrong-content {
-
-    position: relative;
-
-    z-index: 5;
-
-    width: 100%;
-
-    max-width: 500px;
-
-    margin: auto;
-
-    text-align: center;
+.wrong-screen .playing-card {
+  position: relative;
+  left: auto !important;
+  top: auto !important;
+  margin-top: 25px;
+  flex: 0 0 auto;
 }
 
-.wrong-card-wrap {
-
-    display: flex;
-
-    justify-content: center;
-
-    align-items: center;
-
-    margin: 0;
-}
-
-.wrong-card-wrap .card {
-    pointer-events: none;
-
-    box-shadow:
-        0 15px 30px rgba(255,255,255,.08);
-}
-
-
-/* ==================================================
-   FINAL
-================================================== */
+/* Final */
 
 .final-screen {
-
-    background: #000;
-
-    color: #fff;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
-.final-content {
+.final-card {
+  width: 240px;
+  height: 340px;
+  border-radius: 18px;
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 25px;
+  text-align: center;
+  transition: background .35s ease;
+}
 
-    width: 100%;
+.final-card.red-bg {
+  background: #36151b;
+}
 
-    max-width: 500px;
+.final-card.blue-bg {
+  background: #152337;
+}
 
-    margin: auto;
+.final-card.green-bg {
+  background: #143023;
+}
 
-    text-align: center;
+.final-card.gold-bg {
+  background: #352b13;
 }
 
 .final-small {
-
-    margin-bottom: 13px;
-
-    color: #666;
-
-    font-size: 13px;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.55);
 }
 
-.final-title {
-
-    margin: 0;
-
-    font-size:
-        clamp(42px, 12vw, 70px);
-
-    line-height: .95;
-
-    letter-spacing: -4px;
-
-    font-weight: 700;
+.final-card-name {
+  margin-top: 18px;
+  font-size: 31px;
+  line-height: 1.08;
+  font-weight: 700;
+  letter-spacing: -1.2px;
+  overflow-wrap: anywhere;
 }
 
 .final-playing-card {
-
-    display: flex;
-
-    justify-content: center;
-
-    margin-top: 30px;
+  margin-top: 25px;
+  font-size: 17px;
+  color: #999;
 }
 
-.name-card {
+@media (max-width: 700px) {
+  .card-stage,
+  .performance-stage {
+    width: 96vw;
+  }
 
-    display: flex;
+  .playing-card,
+  .deck-card {
+    width: 76px;
+    height: 114px;
+    border-radius: 8px;
+  }
 
-    align-items: center;
+  .card-corner {
+    left: 7px;
+    top: 6px;
+    font-size: 13px;
+  }
 
-    justify-content: center;
+  .card-corner.bottom {
+    right: 7px;
+    bottom: 6px;
+  }
 
-    width:
-        min(82vw, 280px);
+  .card-center,
+  .deck-card .card-center {
+    font-size: 39px;
+  }
 
-    min-height: 108px;
+  .card-stage {
+    height: calc(100vh - 155px);
+    min-height: 585px;
+    margin-top: 14px;
+  }
 
-    margin: 32px auto 0;
+  .performance-stage {
+    height: calc(100vh - 145px);
+    min-height: 585px;
+  }
 
-    padding: 20px;
-
-    border-radius: 15px;
-
-    color: #fff;
-
-    font-size: 25px;
-
-    font-weight: 700;
-
-    letter-spacing: -1px;
-
-    background: #18263d;
-
-    transition:
-        background .7s ease;
+  .top-info {
+    padding-top: 34px;
+  }
 }
 
+@media (max-width: 380px) {
+  .playing-card,
+  .deck-card {
+    width: 72px;
+    height: 108px;
+  }
 
-/* ==================================================
-   MOBILE
-================================================== */
-
-@media (max-width: 600px) {
-
-    .screen {
-        padding: 20px;
-    }
-
-    .home-logo {
-        top: 20px;
-        left: 20px;
-    }
-
-    /*
-       Large enough for fingers,
-       but still compact.
-    */
-
-    .card {
-        width: 76px;
-        height: 116px;
-    }
-
-    .choice-card {
-
-        width: 76px;
-        height: 116px;
-
-        margin-left: -38px;
-        margin-top: -58px;
-    }
-
-    .choice-area {
-
-        width: 100%;
-
-        height: 315px;
-
-        margin-top: 22px;
-    }
-
-    .choice-card:nth-child(1) {
-        transform:
-            translateX(-28px)
-            rotate(-2.5deg);
-    }
-
-    .choice-card:nth-child(2) {
-        transform:
-            translateX(-22px)
-            rotate(-2deg);
-    }
-
-    .choice-card:nth-child(3) {
-        transform:
-            translateX(-16px)
-            rotate(-1.5deg);
-    }
-
-    .choice-card:nth-child(4) {
-        transform:
-            translateX(-9px)
-            rotate(-.7deg);
-    }
-
-    .choice-card:nth-child(5) {
-        transform:
-            translateX(-1px)
-            rotate(.5deg);
-    }
-
-    .choice-card:nth-child(6) {
-        transform:
-            translateX(7px)
-            rotate(1deg);
-    }
-
-    .choice-card:nth-child(7) {
-        transform:
-            translateX(14px)
-            rotate(1.5deg);
-    }
-
-    .choice-card:nth-child(8) {
-        transform:
-            translateX(21px)
-            rotate(2.5deg);
-    }
-
-    .card-center {
-        font-size: 31px;
-    }
-
-    .deck-area {
-
-        width: 280px;
-
-        height: 220px;
-    }
-
-    .deck-card {
-
-        width: 76px;
-        height: 116px;
-
-        margin-left: -38px;
-        margin-top: -58px;
-    }
-
-    .setup-row {
-
-        grid-template-columns:
-            100px
-            1fr;
-    }
-
+  .card-stage,
+  .performance-stage {
+    min-height: 555px;
+  }
 }
 
-
-/* ==================================================
-   VERY SMALL PHONES
-================================================== */
-
-@media (max-width: 360px) {
-
-    .card {
-
-        width: 70px;
-        height: 108px;
-    }
-
-    .choice-card {
-
-        width: 70px;
-        height: 108px;
-
-        margin-left: -35px;
-        margin-top: -54px;
-    }
-
-    .choice-card:nth-child(1) {
-        transform:
-            translateX(-24px)
-            rotate(-2deg);
-    }
-
-    .choice-card:nth-child(2) {
-        transform:
-            translateX(-19px)
-            rotate(-1.7deg);
-    }
-
-    .choice-card:nth-child(3) {
-        transform:
-            translateX(-14px)
-            rotate(-1.3deg);
-    }
-
-    .choice-card:nth-child(4) {
-        transform:
-            translateX(-8px)
-            rotate(-.6deg);
-    }
-
-    .choice-card:nth-child(5) {
-        transform:
-            translateX(-1px);
-    }
-
-    .choice-card:nth-child(6) {
-        transform:
-            translateX(6px)
-            rotate(1deg);
-    }
-
-    .choice-card:nth-child(7) {
-        transform:
-            translateX(12px)
-            rotate(1.5deg);
-    }
-
-    .choice-card:nth-child(8) {
-        transform:
-            translateX(18px)
-            rotate(2deg);
-    }
-
-    .card-center {
-        font-size: 28px;
-    }
-
-    .card-rank,
-    .card-rank-bottom {
-        font-size: 13px;
-    }
-
-    .card-suit,
-    .card-suit-bottom {
-        font-size: 11px;
-    }
-
+@media (min-width: 701px) {
+  .card-stage,
+  .performance-stage {
+    min-height: 440px;
+  }
 }
 
+.hidden {
+  display: none !important;
+}
 </style>
 </head>
 
-
 <body>
 
-<div id="app">
+<div class="logo" id="secretLogo">8thhorseman</div>
 
-
-<!-- ==================================================
-     HOME
-================================================== -->
-
-<section id="homeScreen"
-         class="screen active center">
-
-    <div id="secretLogo"
-         class="home-logo">
-        8thhorseman
-    </div>
-
-    <div class="home-content">
-
-        <h1 class="home-title">
-            8thhorseman
-        </h1>
-
-        <p class="home-subtitle">
-            A card trick with a secret.
-        </p>
-
-        <button id="startButton"
-                class="primary-button">
-            Start
-        </button>
-
-    </div>
-
+<!-- HOME -->
+<section id="homeScreen" class="screen active center">
+  <h1>8thhorseman</h1>
+  <p class="subtitle">
+    A simple card experiment.
+  </p>
+  <button class="primary-btn" id="startBtn">Begin</button>
 </section>
 
+<!-- CONTESTANT COUNT -->
+<section id="countScreen" class="screen center">
+  <h1>Contestants</h1>
+  <p class="subtitle">How many people are taking part?</p>
 
+  <div class="choice-count" id="countButtons">
+    <button class="count-btn" data-count="1">1</button>
+    <button class="count-btn" data-count="2">2</button>
+    <button class="count-btn" data-count="3">3</button>
+    <button class="count-btn" data-count="4">4</button>
+    <button class="count-btn" data-count="5">5</button>
+    <button class="count-btn" data-count="6">6</button>
+    <button class="count-btn" data-count="7">7</button>
+    <button class="count-btn" data-count="8">8</button>
+  </div>
 
-<!-- ==================================================
-     COUNT
-================================================== -->
-
-<section id="countScreen"
-         class="screen center">
-
-    <div class="top-logo">
-        8thhorseman
-    </div>
-
-    <h2 class="heading">
-        How many?
-    </h2>
-
-    <p class="description">
-        Choose the number of contestants.
-    </p>
-
-    <div id="numberGrid"
-         class="number-grid">
-    </div>
-
+  <button class="primary-btn" id="countContinue" disabled>
+    Continue
+  </button>
 </section>
 
+<!-- SECRET SETUP -->
+<section id="secretScreen" class="screen center">
+  <h1>Private setup</h1>
+  <p class="subtitle">
+    Only the performer should look at this screen.
+  </p>
 
-
-<!-- ==================================================
-     SECRET SETUP
-================================================== -->
-
-<section id="setupScreen"
-         class="screen center">
-
-    <div class="top-logo">
-        8thhorseman
+  <div class="secret-box">
+    <div class="secret-number" id="secretNumber">
+      Contestant 1
     </div>
 
-    <h2 class="heading">
-        Setup
-    </h2>
-
-    <p class="description">
-        Choose the secret name for each contestant.
-    </p>
-
-    <div id="setupList"
-         class="setup-list">
+    <div class="secret-name" id="secretName">
+      —
     </div>
 
-    <button id="setupDoneButton"
-            class="primary-button">
-        Begin
-    </button>
+    <div class="secret-note">
+      Remember this name. It will be revealed at the end.
+    </div>
+  </div>
 
+  <button class="primary-btn" id="secretContinue">
+    Continue
+  </button>
 </section>
 
+<!-- CHOOSE CARD -->
+<section id="choiceScreen" class="screen card-screen">
+  <div class="top-info">
+    <h2 id="choiceTitle">Choose one card</h2>
+    <p>Touch a card. You can move it anywhere.</p>
+  </div>
 
+  <div class="card-stage" id="choiceStage"></div>
 
-<!-- ==================================================
-     CHOOSE
-================================================== -->
-
-<section id="chooseScreen"
-         class="screen center">
-
-    <div class="top-logo">
-        8thhorseman
-    </div>
-
-    <h2 class="heading">
-        Contestant
-        <span id="contestantNumber"></span>
-    </h2>
-
-    <p class="description">
-        Choose one card.
-    </p>
-
-    <div id="choiceArea"
-         class="choice-area">
-    </div>
-
-    <div id="hideArea"
-         class="hide-area"
-         style="display:none;">
-
-        <div class="hide-message">
-            Remember it.
-        </div>
-
-        <button id="hideButton"
-                class="primary-button">
-            Hide
-        </button>
-
-    </div>
-
+  <button class="primary-btn" id="hideChoiceBtn" disabled>
+    Hide
+  </button>
 </section>
 
+<!-- PERFORMANCE -->
+<section id="performanceScreen" class="screen performance-screen">
+  <button class="shuffle-btn" id="shuffleBtn">
+    Shuffle
+  </button>
 
+  <div class="performance-header">
+    <h2>8thhorseman</h2>
+    <p>All ten cards are on the table.</p>
+  </div>
 
-<!-- ==================================================
-     PERFORMANCE
-================================================== -->
-
-<section id="performanceScreen"
-         class="screen performance-screen center">
-
-    <div class="top-logo">
-        8thhorseman
-    </div>
-
-    <div class="performance-content">
-
-        <h2 class="performance-title">
-            Watch.
-        </h2>
-
-        <div id="deckArea"
-             class="deck-area">
-        </div>
-
-        <button id="shuffleButton"
-                class="shuffle-button">
-            Shuffle
-        </button>
-
-    </div>
-
-    <div id="blackClickZone"
-         class="black-click-zone">
-    </div>
-
+  <div class="performance-stage" id="performanceStage"></div>
 </section>
 
+<!-- WRONG CARD -->
+<section id="wrongScreen" class="screen wrong-screen">
+  <div class="top-info">
+    <h2>One card</h2>
+  </div>
 
-
-<!-- ==================================================
-     WRONG
-================================================== -->
-
-<section id="wrongScreen"
-         class="screen wrong-screen center">
-
-    <div class="wrong-content">
-
-        <div id="wrongCardWrap"
-             class="wrong-card-wrap">
-        </div>
-
-    </div>
-
+  <div id="wrongCardHolder"></div>
 </section>
 
+<!-- FINAL -->
+<section id="finalScreen" class="screen final-screen">
+  <h1>There it is.</h1>
 
-
-<!-- ==================================================
-     FINAL
-================================================== -->
-
-<section id="finalScreen"
-         class="screen final-screen center">
-
-    <div class="final-content">
-
-        <div class="final-small">
-            Your card
-        </div>
-
-        <h2 id="finalCardText"
-            class="final-title">
-            —
-        </h2>
-
-        <div id="finalPlayingCard"
-             class="final-playing-card">
-        </div>
-
-        <div id="nameCard"
-             class="name-card">
-
-            <span id="finalNameText">
-                —
-            </span>
-
-        </div>
-
-        <div class="button-row">
-
-            <button id="nextButton"
-                    class="small-button">
-                Next
-            </button>
-
-            <button id="restartButton"
-                    class="secondary-button">
-                Restart
-            </button>
-
-        </div>
-
+  <div class="final-card red-bg" id="finalNameCard">
+    <div class="final-small">The card knew</div>
+    <div class="final-card-name" id="finalName">
+      —
     </div>
+    <div class="final-playing-card" id="finalPlayingCard">
+      —
+    </div>
+  </div>
 
+  <button class="primary-btn" id="nextBtn">
+    Next contestant
+  </button>
+
+  <button class="secondary-btn" id="restartBtn">
+    Start over
+  </button>
 </section>
-
-</div>
-
-
 
 <script>
+"use strict";
 
-/* ==================================================
-   NAMES
-================================================== */
+/* =========================================================
+   NAME DATABASE
+========================================================= */
 
 const NAMES = {
+  A: "Adi Lekshmi",
+  B: "Devi",
+  C: "Bianca",
+  D: "Reshma",
+  E: "Akhila",
+  F: "Nandana",
+  G: "Abiya",
+  H: "Suhail",
+  I: "Clement",
+  J: "Sreehari",
+  K: "Sherin",
+  L: "Kasi",
+  M: "Charles",
+  N: "Deksh",
+  O: "Gokul",
+  P: "Alby",
+  Q: "Adarsh",
+  R: "Keerthana",
+  S: "Sahala",
+  T: "Priya",
+  U: "Prinu",
+  V: "Anjana",
+  W: "Ajay",
+  X: "Abin",
+  Y: "Alen",
+  Z: "Febin",
 
-    A: "Adi Lekshmi",
-    B: "Devi",
-    C: "Bianca",
-    D: "Reshma",
-    E: "Akhila",
-    F: "Nandana",
-    G: "Abiya",
-    H: "Suhail",
-    I: "Clement",
-    J: "Sreehari",
-    K: "Sherin",
-    L: "Kasi",
-    M: "Charles",
-    N: "Deksh",
-    O: "Gokul",
-    P: "Alby",
-    Q: "Adarsh",
-    R: "Keerthana",
-    S: "Sahala",
-    T: "Priya",
-    U: "Prinu",
-    V: "Anjana",
-    W: "Ajay",
-    X: "Abin",
-    Y: "Alen",
-    Z: "Febin",
-
-    0: "Anoop",
-    1: "Reena",
-    2: "Ani",
-    3: "Blesswin",
-    4: "Lincy",
-    5: "Abel",
-    6: "Arun",
-    7: "Meera",
-    8: "Rahul",
-    9: "Neha",
-
-    10: "Anjali",
-    11: "Amal",
-    12: "Asha",
-    13: "Athira",
-    14: "Arjun",
-    15: "Devika",
-    16: "Diya",
-    17: "Esha",
-    18: "Fahad",
-    19: "Fathima",
-    20: "Gautham",
-    21: "Hanna",
-    22: "Hari",
-    23: "Irene",
-    24: "Jithin",
-    25: "Joel",
-    26: "Kiran",
-    27: "Lakshmi",
-    28: "Manu",
-    29: "Maya",
-    30: "Nikhil",
-    31: "Nimisha",
-    32: "Nithin",
-    33: "Parvathy",
-    34: "Riya",
-    35: "Rohit",
-    36: "Sanjay",
-    37: "Saniya",
-    38: "Sharon",
-    39: "Sneha",
-    40: "Sooraj",
-    41: "Swathi",
-    42: "Thomas",
-    43: "Varun",
-    44: "Vishnu",
-    45: "Yadu",
-    46: "Ziya"
+  0: "Anoop",
+  1: "Reena",
+  2: "Ani",
+  3: "Blesswin",
+  4: "Lincy",
+  5: "Abel",
+  6: "Arun",
+  7: "Meera",
+  8: "Rahul",
+  9: "Neha",
+  10: "Anjali",
+  11: "Amal",
+  12: "Asha",
+  13: "Athira",
+  14: "Arjun",
+  15: "Devika",
+  16: "Diya",
+  17: "Esha",
+  18: "Fahad",
+  19: "Fathima",
+  20: "Gautham",
+  21: "Hanna",
+  22: "Hari",
+  23: "Irene",
+  24: "Jithin",
+  25: "Joel",
+  26: "Kiran",
+  27: "Lakshmi",
+  28: "Manu",
+  29: "Maya",
+  30: "Nikhil",
+  31: "Nimisha",
+  32: "Nithin",
+  33: "Parvathy",
+  34: "Riya",
+  35: "Rohit",
+  36: "Sanjay",
+  37: "Saniya",
+  38: "Sharon",
+  39: "Sneha",
+  40: "Sooraj",
+  41: "Swathi",
+  42: "Thomas",
+  43: "Varun",
+  44: "Vishnu",
+  45: "Yadu",
+  46: "Ziya"
 };
 
+/* =========================================================
+   DECK
+========================================================= */
 
-/* ==================================================
-   CARDS
-================================================== */
-
-const suits = [
-
-    {
-        symbol: "♠",
-        color: "black"
-    },
-
-    {
-        symbol: "♥",
-        color: "red"
-    },
-
-    {
-        symbol: "♦",
-        color: "red"
-    },
-
-    {
-        symbol: "♣",
-        color: "black"
-    }
-
+const SUITS = [
+  { symbol: "♠", color: "black" },
+  { symbol: "♥", color: "red" },
+  { symbol: "♦", color: "red" },
+  { symbol: "♣", color: "black" }
 ];
 
-
-const ranks = [
-
-    "A",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "10",
-    "J",
-    "Q",
-    "K"
-
+const RANKS = [
+  "A", "2", "3", "4", "5", "6", "7",
+  "8", "9", "10", "J", "Q", "K"
 ];
 
+let fullDeck = [];
 
-function createDeck() {
-
-    const deck = [];
-
-    suits.forEach(suit => {
-
-        ranks.forEach(rank => {
-
-            deck.push({
-
-                id:
-                    rank +
-                    suit.symbol,
-
-                rank:
-                    rank,
-
-                suit:
-                    suit.symbol,
-
-                color:
-                    suit.color
-
-            });
-
-        });
-
+for (const suit of SUITS) {
+  for (const rank of RANKS) {
+    fullDeck.push({
+      rank,
+      suit: suit.symbol,
+      color: suit.color,
+      id: `${rank}${suit.symbol}`
     });
-
-    return deck;
+  }
 }
 
-
-const fullDeck =
-    createDeck();
-
-
-/* ==================================================
+/* =========================================================
    STATE
-================================================== */
+========================================================= */
 
 const state = {
+  contestantCount: 1,
+  currentContestant: 1,
 
-    contestantCount: 1,
+  names: [],
+  selectedCard: null,
 
-    currentContestant: 1,
+  choiceCards: [],
+  performanceCards: [],
+  wrongCard: null,
 
-    names: [],
+  motionReady: false,
+  motionListening: false,
 
-    selectedCard: null,
+  lastMotion: null,
+  shakeEnergy: 0,
+  lastShake: 0,
 
-    wrongCard: null,
-
-    choiceCards: [],
-
-    shuffled: false,
-
-    revealed: false,
-
-    motionListening: false,
-
-    motionReady: false,
-
-    lastMotion: null,
-
-    shakeEnergy: 0,
-
-    lastShake: 0
-
+  captureUsed: false,
+  revealed: false
 };
 
-
-/* ==================================================
-   ELEMENTS
-================================================== */
+/* =========================================================
+   SCREENS
+========================================================= */
 
 const screens = {
-
-    home:
-        document.getElementById(
-            "homeScreen"
-        ),
-
-    count:
-        document.getElementById(
-            "countScreen"
-        ),
-
-    setup:
-        document.getElementById(
-            "setupScreen"
-        ),
-
-    choose:
-        document.getElementById(
-            "chooseScreen"
-        ),
-
-    performance:
-        document.getElementById(
-            "performanceScreen"
-        ),
-
-    wrong:
-        document.getElementById(
-            "wrongScreen"
-        ),
-
-    final:
-        document.getElementById(
-            "finalScreen"
-        )
-
+  home: document.getElementById("homeScreen"),
+  count: document.getElementById("countScreen"),
+  secret: document.getElementById("secretScreen"),
+  choice: document.getElementById("choiceScreen"),
+  performance: document.getElementById("performanceScreen"),
+  wrong: document.getElementById("wrongScreen"),
+  final: document.getElementById("finalScreen")
 };
 
-
-const numberGrid =
-    document.getElementById(
-        "numberGrid"
-    );
-
-const setupList =
-    document.getElementById(
-        "setupList"
-    );
-
-const choiceArea =
-    document.getElementById(
-        "choiceArea"
-    );
-
-const contestantNumber =
-    document.getElementById(
-        "contestantNumber"
-    );
-
-const hideArea =
-    document.getElementById(
-        "hideArea"
-    );
-
-const deckArea =
-    document.getElementById(
-        "deckArea"
-    );
-
-const wrongCardWrap =
-    document.getElementById(
-        "wrongCardWrap"
-    );
-
-const blackClickZone =
-    document.getElementById(
-        "blackClickZone"
-    );
-
-const finalCardText =
-    document.getElementById(
-        "finalCardText"
-    );
-
-const finalPlayingCard =
-    document.getElementById(
-        "finalPlayingCard"
-    );
-
-const finalNameText =
-    document.getElementById(
-        "finalNameText"
-    );
-
-const nameCard =
-    document.getElementById(
-        "nameCard"
-    );
-
-
-/* ==================================================
-   SHOW SCREEN
-================================================== */
-
 function showScreen(screen) {
-
-    Object.values(screens)
-        .forEach(item => {
-
-            item.classList.remove(
-                "active"
-            );
-
-        });
-
-    screen.classList.add(
-        "active"
-    );
-
-    window.scrollTo(0, 0);
-
+  Object.values(screens).forEach(s => s.classList.remove("active"));
+  screen.classList.add("active");
 }
 
-
-/* ==================================================
-   SHUFFLE
-================================================== */
+/* =========================================================
+   HELPERS
+========================================================= */
 
 function shuffle(array) {
+  const copy = [...array];
 
-    const result =
-        [...array];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
 
-    for (
-        let i =
-            result.length - 1;
-        i > 0;
-        i--
-    ) {
-
-        const j =
-            Math.floor(
-                Math.random() *
-                (i + 1)
-            );
-
-        [
-            result[i],
-            result[j]
-        ] =
-        [
-            result[j],
-            result[i]
-        ];
-
-    }
-
-    return result;
+  return copy;
 }
 
-
-/* ==================================================
-   CARD HTML
-================================================== */
+function sampleCards(amount) {
+  return shuffle(fullDeck).slice(0, amount);
+}
 
 function cardHTML(card) {
+  const cls = card.color === "red" ? "red" : "black";
 
-    return `
+  return `
+    <div class="card-inner">
+      <div class="card-corner ${cls}">
+        <span>${card.rank}</span>
+        <span>${card.suit}</span>
+      </div>
 
-        <div class="card ${card.color}">
+      <div class="card-center ${cls}">
+        ${card.suit}
+      </div>
 
-            <div class="card-rank">
-                ${card.rank}
-            </div>
-
-            <div class="card-suit">
-                ${card.suit}
-            </div>
-
-            <div class="card-center">
-                ${card.suit}
-            </div>
-
-            <div class="card-rank-bottom">
-                ${card.rank}
-            </div>
-
-            <div class="card-suit-bottom">
-                ${card.suit}
-            </div>
-
-        </div>
-
-    `;
+      <div class="card-corner bottom ${cls}">
+        <span>${card.rank}</span>
+        <span>${card.suit}</span>
+      </div>
+    </div>
+  `;
 }
 
+/* =========================================================
+   CARD GRID
+   IMPORTANT:
+   Every card receives a separate position.
+   No overlapping starting positions.
+========================================================= */
 
-/* ==================================================
-   START
-================================================== */
+function getColumns(stage) {
+  return window.innerWidth <= 700 ? 2 : 5;
+}
 
-document
-    .getElementById(
-        "startButton"
-    )
-    .addEventListener(
-        "click",
-        () => {
+function placeCardsInGrid(stage, elements) {
+  if (!elements.length) return;
 
-            createNumberButtons();
+  const columns = getColumns(stage);
+  const rows = Math.ceil(elements.length / columns);
 
-            showScreen(
-                screens.count
-            );
+  const stageWidth = stage.clientWidth;
+  const stageHeight = stage.clientHeight;
 
-        }
+  const firstRect = elements[0].getBoundingClientRect();
+
+  const cardWidth = firstRect.width;
+  const cardHeight = firstRect.height;
+
+  const horizontalGap = window.innerWidth <= 700 ? 10 : 18;
+  const verticalGap = window.innerWidth <= 700 ? 8 : 18;
+
+  const totalWidth =
+    columns * cardWidth +
+    (columns - 1) * horizontalGap;
+
+  const totalHeight =
+    rows * cardHeight +
+    (rows - 1) * verticalGap;
+
+  const startY = Math.max(
+    5,
+    (stageHeight - totalHeight) / 2
+  );
+
+  let index = 0;
+
+  for (let row = 0; row < rows; row++) {
+    const cardsInRow = Math.min(
+      columns,
+      elements.length - row * columns
     );
 
+    const rowWidth =
+      cardsInRow * cardWidth +
+      (cardsInRow - 1) * horizontalGap;
 
-/* ==================================================
-   NUMBER
-================================================== */
+    const startX =
+      (stageWidth - rowWidth) / 2;
 
-function createNumberButtons() {
+    for (let col = 0; col < cardsInRow; col++) {
+      const el = elements[index++];
 
-    numberGrid.innerHTML = "";
+      const x =
+        startX +
+        col * (cardWidth + horizontalGap);
 
-    for (
-        let i = 1;
-        i <= 8;
-        i++
-    ) {
+      const y =
+        startY +
+        row * (cardHeight + verticalGap);
 
-        const button =
-            document.createElement(
-                "button"
-            );
+      el.style.left = `${x}px`;
+      el.style.top = `${y}px`;
+      el.style.transform = "none";
 
-        button.className =
-            "number-button";
-
-        button.textContent =
-            i;
-
-        button.addEventListener(
-            "click",
-            () => {
-
-                state.contestantCount =
-                    i;
-
-                createSetup();
-
-                showScreen(
-                    screens.setup
-                );
-
-            }
-        );
-
-        numberGrid.appendChild(
-            button
-        );
-
+      el.dataset.x = x;
+      el.dataset.y = y;
+      el.dataset.moved = "false";
     }
-
+  }
 }
 
-
-/* ==================================================
-   SETUP
-================================================== */
-
-function createSetup() {
-
-    setupList.innerHTML = "";
-
-    const names =
-        Object.values(NAMES);
-
-    for (
-        let i = 0;
-        i < state.contestantCount;
-        i++
-    ) {
-
-        const row =
-            document.createElement(
-                "div"
-            );
-
-        row.className =
-            "setup-row";
-
-
-        const label =
-            document.createElement(
-                "div"
-            );
-
-        label.className =
-            "setup-number";
-
-        label.textContent =
-            "Contestant " +
-            (i + 1);
-
-
-        const select =
-            document.createElement(
-                "select"
-            );
-
-        select.className =
-            "name-select";
-
-        select.dataset.index =
-            i;
-
-
-        const first =
-            document.createElement(
-                "option"
-            );
-
-        first.value = "";
-
-        first.textContent =
-            "Choose name";
-
-        first.disabled =
-            true;
-
-        first.selected =
-            true;
-
-        select.appendChild(
-            first
-        );
-
-
-        names.forEach(name => {
-
-            const option =
-                document.createElement(
-                    "option"
-                );
-
-            option.value =
-                name;
-
-            option.textContent =
-                name;
-
-            select.appendChild(
-                option
-            );
-
-        });
-
-
-        row.appendChild(
-            label
-        );
-
-        row.appendChild(
-            select
-        );
-
-        setupList.appendChild(
-            row
-        );
-
-    }
-
-}
-
-
-/* ==================================================
-   SETUP DONE
-================================================== */
-
-document
-    .getElementById(
-        "setupDoneButton"
-    )
-    .addEventListener(
-        "click",
-        () => {
-
-            const selects =
-                [
-                    ...document
-                    .querySelectorAll(
-                        ".name-select"
-                    )
-                ];
-
-
-            const names =
-                selects.map(
-                    select =>
-                        select.value
-                );
-
-
-            if (
-                names.some(
-                    name => !name
-                )
-            ) {
-
-                return;
-
-            }
-
-
-            state.names =
-                names;
-
-            state.currentContestant =
-                1;
-
-            beginContestant();
-
-        }
-    );
-
-
-/* ==================================================
-   BEGIN CONTESTANT
-================================================== */
-
-function beginContestant() {
-
-    state.selectedCard =
-        null;
-
-    state.wrongCard =
-        null;
-
-    state.choiceCards =
-        [];
-
-    state.shuffled =
-        false;
-
-    state.revealed =
-        false;
-
-    state.lastMotion =
-        null;
-
-    state.shakeEnergy =
-        0;
-
-
-    blackClickZone
-        .classList
-        .remove(
-            "disabled"
-        );
-
-    blackClickZone.style.pointerEvents =
-        "auto";
-
-
-    contestantNumber.textContent =
-        state.currentContestant;
-
-
-    hideArea.style.display =
-        "none";
-
-
-    createChoiceCards();
-
-
-    showScreen(
-        screens.choose
-    );
-
-}
-
-
-/* ==================================================
-   CHOICE CARDS
-================================================== */
-
-function createChoiceCards() {
-
-    choiceArea.innerHTML = "";
-
-    const cards =
-        shuffle(fullDeck)
-        .slice(0, 8);
-
-
-    state.choiceCards =
-        cards;
-
-
-    cards.forEach(
-        (card, index) => {
-
-            const wrapper =
-                document.createElement(
-                    "div"
-                );
-
-            wrapper.className =
-                "choice-card";
-
-            wrapper.dataset.index =
-                index;
-
-            wrapper.innerHTML =
-                cardHTML(card);
-
-
-            /*
-               Pointer Events allow both:
-
-               - finger touch
-               - mouse drag
-               - stylus
-            */
-
-            addCardTouchControl(
-                wrapper,
-                card
-            );
-
-
-            choiceArea.appendChild(
-                wrapper
-            );
-
-        }
-    );
-
-}
-
-
-/* ==================================================
-   TOUCHABLE / MOVABLE CARDS
-================================================== */
-
-function addCardTouchControl(
-    wrapper,
-    card
-) {
-
-    let startX = 0;
-    let startY = 0;
-
-    let originalX = 0;
-    let originalY = 0;
-
-    let dragging = false;
-
-    let moved = false;
-
-
-    wrapper.addEventListener(
-        "pointerdown",
-        event => {
-
-            if (
-                state.selectedCard
-            ) {
-                return;
-            }
-
-
-            event.preventDefault();
-
-            wrapper.setPointerCapture(
-                event.pointerId
-            );
-
-
-            startX =
-                event.clientX;
-
-            startY =
-                event.clientY;
-
-
-            originalX = 0;
-            originalY = 0;
-
-
-            dragging = true;
-            moved = false;
-
-
-            wrapper
-                .classList
-                .add(
-                    "dragging"
-                );
-
-
-            /*
-               Bring the touched card
-               to the front.
-            */
-
-            wrapper.style.zIndex =
-                "200";
-
-        },
-        {
-            passive: false
-        }
-    );
-
-
-    wrapper.addEventListener(
-        "pointermove",
-        event => {
-
-            if (!dragging) {
-                return;
-            }
-
-
-            event.preventDefault();
-
-
-            const dx =
-                event.clientX -
-                startX;
-
-            const dy =
-                event.clientY -
-                startY;
-
-
-            if (
-                Math.abs(dx) > 4 ||
-                Math.abs(dy) > 4
-            ) {
-
-                moved = true;
-
-            }
-
-
-            wrapper.style.transform =
-                `
-                translate(
-                    calc(-50% + ${dx}px),
-                    calc(-50% + ${dy}px)
-                )
-                rotate(0deg)
-                scale(1.05)
-                `;
-
-        },
-        {
-            passive: false
-        }
-    );
-
-
-    wrapper.addEventListener(
-        "pointerup",
-        event => {
-
-            if (!dragging) {
-                return;
-            }
-
-
-            dragging = false;
-
-
-            wrapper
-                .classList
-                .remove(
-                    "dragging"
-                );
-
-
-            try {
-
-                wrapper.releasePointerCapture(
-                    event.pointerId
-                );
-
-            } catch (_) {}
-
-
-            /*
-               If the user actually moved
-               the card, don't select it.
-
-               This makes the cards genuinely
-               movable without accidental selection.
-            */
-
-            if (moved) {
-
-                setTimeout(() => {
-
-                    wrapper.style.transform =
-                        "";
-
-                }, 80);
-
-                return;
-
-            }
-
-
-            /*
-               A simple tap selects.
-            */
-
-            chooseCard(
-                card,
-                wrapper
-            );
-
-        },
-        {
-            passive: false
-        }
-    );
-
-
-    wrapper.addEventListener(
-        "pointercancel",
-        () => {
-
-            dragging = false;
-
-            wrapper
-                .classList
-                .remove(
-                    "dragging"
-                );
-
-            wrapper.style.transform =
-                "";
-
-        }
-    );
-
-}
-
-
-/* ==================================================
-   CHOOSE CARD
-================================================== */
-
-function chooseCard(
-    card,
-    element
-) {
-
-    if (
-        state.selectedCard
-    ) {
-        return;
-    }
-
-
-    state.selectedCard =
-        card;
-
-
-    /*
-       Store the secret name
-       inside the selected card.
-    */
-
-    card.privateContestantName =
-        state.names[
-            state.currentContestant - 1
-        ];
-
-
-    document
-        .querySelectorAll(
-            ".choice-card"
-        )
-        .forEach(item => {
-
-            item.style.pointerEvents =
-                "none";
-
-        });
-
-
-    element.classList.add(
-        "selected"
-    );
-
-
-    /*
-       Reset any custom drag
-       position before selection.
-    */
-
-    element.style.transform =
-        "";
-
-
-    setTimeout(
-        () => {
-
-            hideArea.style.display =
-                "block";
-
-        },
-        500
-    );
-
-}
-
-
-/* ==================================================
-   HIDE
-================================================== */
-
-document
-    .getElementById(
-        "hideButton"
-    )
-    .addEventListener(
-        "click",
-        () => {
-
-            if (
-                !state.selectedCard
-            ) {
-                return;
-            }
-
-
-            hideArea.style.display =
-                "none";
-
-
-            createPerformanceDeck();
-
-
-            showScreen(
-                screens.performance
-            );
-
-        }
-    );
-
-
-/* ==================================================
-   PERFORMANCE DECK
-================================================== */
-
-function createPerformanceDeck() {
-
-    deckArea.innerHTML = "";
-
-
-    const cards =
-        shuffle(fullDeck)
-        .slice(0, 10);
-
-
-    cards.forEach(
-        (card, index) => {
-
-            const wrapper =
-                document.createElement(
-                    "div"
-                );
-
-            wrapper.className =
-                "deck-card";
-
-            wrapper.dataset.index =
-                index;
-
-            wrapper.innerHTML =
-                cardHTML(card);
-
-
-            addDeckTouchControl(
-                wrapper
-            );
-
-
-            deckArea.appendChild(
-                wrapper
-            );
-
-        }
-    );
-
-}
-
-
-/* ==================================================
-   MOVABLE PERFORMER CARDS
-================================================== */
-
-function addDeckTouchControl(
-    wrapper
-) {
-
-    let startX = 0;
-    let startY = 0;
-
-    let dragging = false;
-
-    let moved = false;
-
-
-    wrapper.addEventListener(
-        "pointerdown",
-        event => {
-
-            event.preventDefault();
-
-            wrapper.setPointerCapture(
-                event.pointerId
-            );
-
-
-            startX =
-                event.clientX;
-
-            startY =
-                event.clientY;
-
-            dragging = true;
-            moved = false;
-
-            wrapper
-                .classList
-                .add(
-                    "dragging"
-                );
-
-
-            wrapper.style.zIndex =
-                "500";
-
-        },
-        {
-            passive: false
-        }
-    );
-
-
-    wrapper.addEventListener(
-        "pointermove",
-        event => {
-
-            if (!dragging) {
-                return;
-            }
-
-
-            event.preventDefault();
-
-
-            const dx =
-                event.clientX -
-                startX;
-
-            const dy =
-                event.clientY -
-                startY;
-
-
-            if (
-                Math.abs(dx) > 4 ||
-                Math.abs(dy) > 4
-            ) {
-
-                moved = true;
-
-            }
-
-
-            wrapper.style.transform =
-                `
-                translate(
-                    ${dx}px,
-                    ${dy}px
-                )
-                rotate(0deg)
-                scale(1.05)
-                `;
-
-        },
-        {
-            passive: false
-        }
-    );
-
-
-    wrapper.addEventListener(
-        "pointerup",
-        event => {
-
-            dragging = false;
-
-
-            wrapper
-                .classList
-                .remove(
-                    "dragging"
-                );
-
-
-            try {
-
-                wrapper.releasePointerCapture(
-                    event.pointerId
-                );
-
-            } catch (_) {}
-
-
-            /*
-               Return to deck position
-               after movement.
-            */
-
-            if (moved) {
-
-                setTimeout(
-                    () => {
-
-                        wrapper.style.transform =
-                            "";
-
-                    },
-                    100
-                );
-
-            }
-
-        }
-    );
-
-
-    wrapper.addEventListener(
-        "pointercancel",
-        () => {
-
-            dragging = false;
-
-            wrapper
-                .classList
-                .remove(
-                    "dragging"
-                );
-
-            wrapper.style.transform =
-                "";
-
-        }
-    );
-
-}
-
-
-/* ==================================================
-   SHUFFLE
-================================================== */
-
-document
-    .getElementById(
-        "shuffleButton"
-    )
-    .addEventListener(
-        "click",
-        event => {
-
-            event.stopPropagation();
-
-            state.shuffled =
-                true;
-
-            createPerformanceDeck();
-
-        }
-    );
-
-
-/* ==================================================
-   BLACK BACKGROUND
-================================================== */
-
-blackClickZone.addEventListener(
-    "click",
+/* =========================================================
+   DRAGGING
+========================================================= */
+
+function makeDraggable(cardElement, stage, onTap) {
+  let pointerId = null;
+  let startPointerX = 0;
+  let startPointerY = 0;
+  let startX = 0;
+  let startY = 0;
+  let moved = false;
+
+  cardElement.addEventListener(
+    "pointerdown",
     event => {
+      event.preventDefault();
+      event.stopPropagation();
 
-        if (
-            state.wrongCard ||
-            state.revealed
-        ) {
+      pointerId = event.pointerId;
 
-            return;
+      cardElement.setPointerCapture(pointerId);
 
-        }
+      const rect = cardElement.getBoundingClientRect();
+      const stageRect = stage.getBoundingClientRect();
 
+      startPointerX = event.clientX;
+      startPointerY = event.clientY;
 
-        if (
-            !state.shuffled
-        ) {
+      startX = rect.left - stageRect.left;
+      startY = rect.top - stageRect.top;
 
-            return;
+      moved = false;
 
-        }
+      cardElement.classList.add("dragging");
+    },
+    { passive: false }
+  );
 
+  cardElement.addEventListener(
+    "pointermove",
+    event => {
+      if (pointerId !== event.pointerId) return;
 
-        /*
-           Disable FIRST.
-        */
+      event.preventDefault();
 
-        blackClickZone
-            .classList
-            .add(
-                "disabled"
-            );
+      const dx = event.clientX - startPointerX;
+      const dy = event.clientY - startPointerY;
 
-        blackClickZone.style.pointerEvents =
-            "none";
+      if (Math.abs(dx) > 5 || Math.abs(dy) > 5) {
+        moved = true;
+      }
 
+      const cardWidth = cardElement.offsetWidth;
+      const cardHeight = cardElement.offsetHeight;
 
-        chooseWrongCard();
+      let x = startX + dx;
+      let y = startY + dy;
 
-    }
-);
-
-
-/* ==================================================
-   WRONG CARD
-================================================== */
-
-function chooseWrongCard() {
-
-    if (
-        !state.selectedCard
-    ) {
-        return;
-    }
-
-
-    const possible =
-        fullDeck.filter(
-            card =>
-                card.id !==
-                state.selectedCard.id
-        );
-
-
-    state.wrongCard =
-        shuffle(possible)[0];
-
-
-    showWrongCard();
-
-}
-
-
-/* ==================================================
-   WRONG SCREEN
-================================================== */
-
-function showWrongCard() {
-
-    state.revealed =
-        false;
-
-
-    wrongCardWrap.innerHTML =
-        cardHTML(
-            state.wrongCard
-        );
-
-
-    prepareMotion();
-
-
-    showScreen(
-        screens.wrong
-    );
-
-}
-
-
-/* ==================================================
-   PHONE MOTION
-================================================== */
-
-async function prepareMotion() {
-
-    if (
-        typeof DeviceMotionEvent ===
-        "undefined"
-    ) {
-
-        return;
-
-    }
-
-
-    /*
-       iOS permission.
-    */
-
-    if (
-        typeof DeviceMotionEvent.requestPermission ===
-        "function"
-    ) {
-
-        createMotionPermissionLayer();
-
-        return;
-
-    }
-
-
-    /*
-       Android and supported browsers.
-    */
-
-    startMotionListener();
-
-}
-
-
-/* ==================================================
-   IOS PERMISSION
-================================================== */
-
-function createMotionPermissionLayer() {
-
-    if (
-        document.getElementById(
-            "motionPermissionLayer"
+      x = Math.max(
+        0,
+        Math.min(
+          x,
+          stage.clientWidth - cardWidth
         )
-    ) {
+      );
 
-        return;
+      y = Math.max(
+        0,
+        Math.min(
+          y,
+          stage.clientHeight - cardHeight
+        )
+      );
 
-    }
+      cardElement.style.left = `${x}px`;
+      cardElement.style.top = `${y}px`;
 
+      cardElement.dataset.x = x;
+      cardElement.dataset.y = y;
+      cardElement.dataset.moved = moved ? "true" : "false";
+    },
+    { passive: false }
+  );
 
-    const layer =
-        document.createElement(
-            "div"
-        );
+  cardElement.addEventListener(
+    "pointerup",
+    event => {
+      if (pointerId !== event.pointerId) return;
 
+      event.preventDefault();
+      event.stopPropagation();
 
-    layer.id =
-        "motionPermissionLayer";
+      cardElement.classList.remove("dragging");
 
+      if (!moved && typeof onTap === "function") {
+        onTap(cardElement);
+      }
 
-    layer.style.position =
-        "fixed";
+      pointerId = null;
+    },
+    { passive: false }
+  );
 
-    layer.style.inset =
-        "0";
+  cardElement.addEventListener(
+    "pointercancel",
+    event => {
+      if (pointerId !== event.pointerId) return;
 
-    layer.style.zIndex =
-        "999";
-
-    layer.style.background =
-        "transparent";
-
-    layer.style.touchAction =
-        "manipulation";
-
-
-    /*
-       The user touches anywhere.
-
-       No visible instruction.
-    */
-
-    layer.addEventListener(
-        "pointerdown",
-        async event => {
-
-            event.preventDefault();
-
-
-            try {
-
-                const permission =
-                    await DeviceMotionEvent
-                        .requestPermission();
-
-
-                if (
-                    permission ===
-                    "granted"
-                ) {
-
-                    startMotionListener();
-
-                }
-
-            } catch (error) {
-
-                console.log(
-                    error
-                );
-
-            }
-
-
-            layer.remove();
-
-        },
-        {
-            once: true,
-            passive: false
-        }
-    );
-
-
-    document.body.appendChild(
-        layer
-    );
-
+      cardElement.classList.remove("dragging");
+      pointerId = null;
+    },
+    { passive: true }
+  );
 }
 
+/* =========================================================
+   CONTESTANT COUNT
+========================================================= */
 
-/* ==================================================
-   MOTION LISTENER
-================================================== */
+const countButtons =
+  document.querySelectorAll(".count-btn");
+
+const countContinue =
+  document.getElementById("countContinue");
+
+countButtons.forEach(button => {
+  button.addEventListener("click", () => {
+    countButtons.forEach(b =>
+      b.classList.remove("selected")
+    );
+
+    button.classList.add("selected");
+
+    state.contestantCount =
+      Number(button.dataset.count);
+
+    countContinue.disabled = false;
+  });
+});
+
+/* =========================================================
+   START
+========================================================= */
+
+document
+  .getElementById("startBtn")
+  .addEventListener("click", () => {
+    state.currentContestant = 1;
+    state.names = [];
+
+    showScreen(screens.count);
+  });
+
+/* =========================================================
+   SECRET NAME SETUP
+========================================================= */
+
+function chooseSecretName() {
+  const keys = Object.keys(NAMES);
+
+  const key =
+    keys[Math.floor(Math.random() * keys.length)];
+
+  return {
+    key,
+    name: NAMES[key]
+  };
+}
+
+function prepareAllNames() {
+  state.names = [];
+
+  const used = new Set();
+
+  const values = Object.values(NAMES);
+
+  while (
+    state.names.length <
+    state.contestantCount
+  ) {
+    const name =
+      values[Math.floor(Math.random() * values.length)];
+
+    if (!used.has(name)) {
+      used.add(name);
+      state.names.push(name);
+    }
+  }
+}
+
+function showSecretSetup() {
+  const number =
+    document.getElementById("secretNumber");
+
+  const name =
+    document.getElementById("secretName");
+
+  number.textContent =
+    `Contestant ${state.currentContestant}`;
+
+  name.textContent =
+    state.names[state.currentContestant - 1];
+
+  showScreen(screens.secret);
+}
+
+countContinue.addEventListener("click", () => {
+  prepareAllNames();
+  state.currentContestant = 1;
+  showSecretSetup();
+});
+
+/* =========================================================
+   SECRET CONTINUE
+========================================================= */
+
+document
+  .getElementById("secretContinue")
+  .addEventListener("click", () => {
+    buildChoiceCards();
+    showScreen(screens.choice);
+
+    requestMotionPermission();
+  });
+
+/* =========================================================
+   CHOICE DECK
+========================================================= */
+
+const choiceStage =
+  document.getElementById("choiceStage");
+
+const hideChoiceBtn =
+  document.getElementById("hideChoiceBtn");
+
+function buildChoiceCards() {
+  choiceStage.innerHTML = "";
+
+  state.selectedCard = null;
+
+  hideChoiceBtn.disabled = true;
+
+  state.choiceCards =
+    sampleCards(10);
+
+  const elements = [];
+
+  state.choiceCards.forEach(card => {
+    const element =
+      document.createElement("div");
+
+    element.className = "playing-card";
+    element.innerHTML = cardHTML(card);
+
+    element.dataset.cardId = card.id;
+
+    choiceStage.appendChild(element);
+    elements.push(element);
+
+    makeDraggable(
+      element,
+      choiceStage,
+      () => selectChoiceCard(element, card)
+    );
+  });
+
+  /*
+    Wait one frame so the browser knows the real
+    card sizes before calculating positions.
+  */
+  requestAnimationFrame(() => {
+    placeCardsInGrid(choiceStage, elements);
+  });
+}
+
+function selectChoiceCard(element, card) {
+  document
+    .querySelectorAll("#choiceStage .playing-card")
+    .forEach(cardEl =>
+      cardEl.classList.remove("selected")
+    );
+
+  element.classList.add("selected");
+
+  state.selectedCard = card;
+
+  /*
+    The contestant's private name is stored directly
+    with the chosen card object.
+  */
+  state.selectedCard.privateContestantName =
+    state.names[state.currentContestant - 1];
+
+  hideChoiceBtn.disabled = false;
+}
+
+/* =========================================================
+   HIDE CHOICE
+========================================================= */
+
+hideChoiceBtn.addEventListener("click", () => {
+  if (!state.selectedCard) return;
+
+  beginPerformance();
+});
+
+/* =========================================================
+   MOTION PERMISSION
+========================================================= */
+
+async function requestMotionPermission() {
+  if (
+    typeof DeviceMotionEvent === "undefined"
+  ) {
+    return;
+  }
+
+  if (
+    typeof DeviceMotionEvent.requestPermission ===
+    "function"
+  ) {
+    try {
+      const permission =
+        await DeviceMotionEvent.requestPermission();
+
+      if (permission === "granted") {
+        startMotionListener();
+      }
+    } catch (error) {
+      console.log(
+        "Motion permission was not granted.",
+        error
+      );
+    }
+  } else {
+    startMotionListener();
+  }
+}
 
 function startMotionListener() {
+  if (state.motionListening) return;
 
-    if (
-        state.motionListening
-    ) {
+  state.motionListening = true;
+  state.motionReady = true;
 
-        return;
-
-    }
-
-
-    state.motionListening =
-        true;
-
-    state.motionReady =
-        true;
-
-
-    window.addEventListener(
-        "devicemotion",
-        detectShake,
-        {
-            passive: true
-        }
-    );
-
+  window.addEventListener(
+    "devicemotion",
+    detectShake,
+    { passive: true }
+  );
 }
-
-
-/* ==================================================
-   SHAKE DETECTION
-================================================== */
 
 function detectShake(event) {
+  if (!state.motionReady) return;
+  if (state.revealed) return;
+  if (!state.wrongCard) return;
 
-    if (
-        !state.motionReady
-    ) {
-        return;
+  if (
+    !screens.wrong.classList.contains("active")
+  ) {
+    return;
+  }
+
+  const acceleration =
+    event.acceleration ||
+    event.accelerationIncludingGravity;
+
+  if (!acceleration) return;
+
+  const x = Number(acceleration.x) || 0;
+  const y = Number(acceleration.y) || 0;
+  const z = Number(acceleration.z) || 0;
+
+  if (!state.lastMotion) {
+    state.lastMotion = { x, y, z };
+    return;
+  }
+
+  const dx =
+    x - state.lastMotion.x;
+
+  const dy =
+    y - state.lastMotion.y;
+
+  const dz =
+    z - state.lastMotion.z;
+
+  state.lastMotion = { x, y, z };
+
+  const movement =
+    Math.sqrt(
+      dx * dx +
+      dy * dy +
+      dz * dz
+    );
+
+  if (movement > 2.2) {
+    state.shakeEnergy += movement;
+  } else {
+    state.shakeEnergy *= .82;
+  }
+
+  const now = performance.now();
+
+  if (
+    state.shakeEnergy > 24 &&
+    now - state.lastShake > 1200
+  ) {
+    state.shakeEnergy = 0;
+    state.lastShake = now;
+
+    if ("vibrate" in navigator) {
+      navigator.vibrate(70);
     }
 
-
-    if (
-        state.revealed
-    ) {
-        return;
-    }
-
-
-    if (
-        !state.wrongCard
-    ) {
-        return;
-    }
-
-
-    if (
-        !screens.wrong.classList.contains(
-            "active"
-        )
-    ) {
-
-        return;
-
-    }
-
-
-    const acceleration =
-        event.acceleration ||
-        event.accelerationIncludingGravity;
-
-
-    if (!acceleration) {
-        return;
-    }
-
-
-    const x =
-        acceleration.x || 0;
-
-    const y =
-        acceleration.y || 0;
-
-    const z =
-        acceleration.z || 0;
-
-
-    if (
-        !state.lastMotion
-    ) {
-
-        state.lastMotion = {
-            x,
-            y,
-            z
-        };
-
-        return;
-
-    }
-
-
-    const dx =
-        x -
-        state.lastMotion.x;
-
-    const dy =
-        y -
-        state.lastMotion.y;
-
-    const dz =
-        z -
-        state.lastMotion.z;
-
-
-    state.lastMotion = {
-        x,
-        y,
-        z
-    };
-
-
-    const movement =
-        Math.sqrt(
-            dx * dx +
-            dy * dy +
-            dz * dz
-        );
-
-
-    if (
-        movement > 2.5
-    ) {
-
-        state.shakeEnergy +=
-            movement;
-
-    } else {
-
-        state.shakeEnergy *=
-            .82;
-
-    }
-
-
-    const now =
-        performance.now();
-
-
-    if (
-        state.shakeEnergy > 27 &&
-        now - state.lastShake > 1200
-    ) {
-
-        state.shakeEnergy =
-            0;
-
-        state.lastShake =
-            now;
-
-
-        if (
-            "vibrate" in navigator
-        ) {
-
-            navigator.vibrate(
-                70
-            );
-
-        }
-
-
-        revealReal();
-
-    }
-
+    revealRealCard();
+  }
 }
 
+/* =========================================================
+   PERFORMANCE DECK
+========================================================= */
 
-/* ==================================================
-   FINAL REVEAL
-================================================== */
+const performanceScreen =
+  document.getElementById("performanceScreen");
 
-function revealReal() {
+const performanceStage =
+  document.getElementById("performanceStage");
 
-    if (
-        state.revealed
-    ) {
+function beginPerformance() {
+  state.captureUsed = false;
+  state.revealed = false;
+  state.wrongCard = null;
+  state.lastMotion = null;
+  state.shakeEnergy = 0;
 
-        return;
+  buildPerformanceDeck();
 
-    }
+  showScreen(screens.performance);
 
+  /*
+    Request permission from a real user interaction.
+    This is important for iPhone/iPad.
+  */
+  requestMotionPermission();
+}
 
-    if (
-        !state.selectedCard
-    ) {
+function buildPerformanceDeck() {
+  performanceStage.innerHTML = "";
 
-        return;
+  /*
+    Exactly 10 cards.
+    The chosen card remains among these ten.
+  */
+  state.performanceCards =
+    sampleCards(10);
 
-    }
+  const elements = [];
 
+  state.performanceCards.forEach(card => {
+    const element =
+      document.createElement("div");
 
-    state.revealed =
-        true;
+    element.className = "deck-card";
+    element.innerHTML = cardHTML(card);
 
-    state.motionReady =
-        false;
+    element.dataset.cardId = card.id;
 
-    state.lastMotion =
-        null;
+    performanceStage.appendChild(element);
+    elements.push(element);
 
-    state.shakeEnergy =
-        0;
+    makeDraggable(
+      element,
+      performanceStage,
+      () => {
+        /*
+          Tapping a card does nothing.
+          The black area is what triggers the wrong card.
+        */
+      }
+    );
+  });
 
+  requestAnimationFrame(() => {
+    placeCardsInGrid(
+      performanceStage,
+      elements
+    );
+  });
+}
 
-    const permissionLayer =
-        document.getElementById(
-            "motionPermissionLayer"
-        );
+/* =========================================================
+   BLACK BACKGROUND CAPTURE
+========================================================= */
 
-
-    if (
-        permissionLayer
-    ) {
-
-        permissionLayer.remove();
-
-    }
-
-
-    const card =
-        state.selectedCard;
-
+performanceScreen.addEventListener(
+  "pointerdown",
+  event => {
+    if (state.captureUsed) return;
+    if (state.revealed) return;
 
     /*
-       Retrieve the private name
-       stored in the card.
+      Only empty black space captures.
+      Touching or dragging a card cannot trigger it.
     */
-
-    const realName =
-        card.privateContestantName ||
-        state.names[
-            state.currentContestant - 1
-        ];
-
-
-    finalCardText.textContent =
-        card.rank +
-        " " +
-        card.suit;
-
-
-    finalPlayingCard.innerHTML =
-        cardHTML(card);
-
-
-    finalNameText.textContent =
-        realName;
-
-
-    nameCard.style.background =
-        "#18263d";
-
-
-    showScreen(
-        screens.final
-    );
-
-
-    startNameColorCycle();
-
-}
-
-
-/* ==================================================
-   NAME CARD COLORS
-================================================== */
-
-let colorTimer =
-    null;
-
-
-const nameColors = [
-
-    "#18263d",
-    "#32191c",
-    "#18351f",
-    "#3a3016"
-
-];
-
-
-function startNameColorCycle() {
-
-    clearInterval(
-        colorTimer
-    );
-
-
-    let index = 0;
-
-
-    colorTimer =
-        setInterval(
-            () => {
-
-                if (
-                    !screens.final
-                        .classList
-                        .contains(
-                            "active"
-                        )
-                ) {
-
-                    clearInterval(
-                        colorTimer
-                    );
-
-                    return;
-
-                }
-
-
-                index =
-                    (
-                        index + 1
-                    ) %
-                    nameColors.length;
-
-
-                nameCard.style.background =
-                    nameColors[index];
-
-            },
-            1600
-        );
-
-}
-
-
-/* ==================================================
-   NEXT
-================================================== */
-
-document
-    .getElementById(
-        "nextButton"
-    )
-    .addEventListener(
-        "click",
-        () => {
-
-            clearInterval(
-                colorTimer
-            );
-
-
-            if (
-                state.currentContestant <
-                state.contestantCount
-            ) {
-
-                state.currentContestant++;
-
-                beginContestant();
-
-            } else {
-
-                state.currentContestant =
-                    1;
-
-                beginContestant();
-
-            }
-
-        }
-    );
-
-
-/* ==================================================
-   RESTART
-================================================== */
-
-document
-    .getElementById(
-        "restartButton"
-    )
-    .addEventListener(
-        "click",
-        () => {
-
-            clearInterval(
-                colorTimer
-            );
-
-
-            state.contestantCount =
-                1;
-
-            state.currentContestant =
-                1;
-
-            state.names =
-                [];
-
-            state.selectedCard =
-                null;
-
-            state.wrongCard =
-                null;
-
-            state.choiceCards =
-                [];
-
-            state.shuffled =
-                false;
-
-            state.revealed =
-                false;
-
-            state.motionReady =
-                false;
-
-            state.lastMotion =
-                null;
-
-            state.shakeEnergy =
-                0;
-
-
-            blackClickZone
-                .classList
-                .remove(
-                    "disabled"
-                );
-
-            blackClickZone.style.pointerEvents =
-                "auto";
-
-
-            const layer =
-                document.getElementById(
-                    "motionPermissionLayer"
-                );
-
-
-            if (layer) {
-                layer.remove();
-            }
-
-
-            showScreen(
-                screens.home
-            );
-
-        }
-    );
-
-
-/* ==================================================
-   SECRET ACCESS
-================================================== */
-
-/*
-   Desktop:
-   Shift + P
-
-   Mobile:
-   Long press the logo.
-*/
-
-document.addEventListener(
-    "keydown",
-    event => {
-
-        if (
-            event.shiftKey &&
-            event.key.toLowerCase() ===
-                "p"
-        ) {
-
-            createSetup();
-
-            showScreen(
-                screens.setup
-            );
-
-        }
-
+    const isCard =
+      event.target.closest &&
+      event.target.closest(".deck-card");
+
+    const isButton =
+      event.target.closest &&
+      event.target.closest("button");
+
+    if (isCard || isButton) {
+      return;
     }
+
+    chooseWrongCard();
+  },
+  { passive: true }
 );
 
+/* =========================================================
+   CHOOSE WRONG CARD
+========================================================= */
+
+function chooseWrongCard() {
+  if (state.captureUsed) return;
+  if (!state.selectedCard) return;
+
+  state.captureUsed = true;
+
+  /*
+    Deliberately choose a card that is NOT the selected card.
+  */
+  const wrongCandidates =
+    state.performanceCards.filter(
+      card =>
+        card.id !== state.selectedCard.id
+    );
+
+  state.wrongCard =
+    wrongCandidates[
+      Math.floor(
+        Math.random() *
+        wrongCandidates.length
+      )
+    ];
+
+  showWrongCard();
+}
+
+/* =========================================================
+   WRONG CARD SCREEN
+========================================================= */
+
+const wrongCardHolder =
+  document.getElementById("wrongCardHolder");
+
+function showWrongCard() {
+  wrongCardHolder.innerHTML = "";
+
+  const card =
+    document.createElement("div");
+
+  card.className = "playing-card";
+  card.innerHTML =
+    cardHTML(state.wrongCard);
+
+  wrongCardHolder.appendChild(card);
+
+  showScreen(screens.wrong);
+}
+
+/* =========================================================
+   REVEAL
+========================================================= */
+
+function revealRealCard() {
+  if (state.revealed) return;
+  if (!state.selectedCard) return;
+
+  state.revealed = true;
+
+  const realName =
+    state.selectedCard.privateContestantName ||
+    state.names[state.currentContestant - 1] ||
+    "Unknown";
+
+  document.getElementById("finalName")
+    .textContent = realName;
+
+  document.getElementById("finalPlayingCard")
+    .textContent =
+      `${state.selectedCard.rank}${state.selectedCard.suit}`;
+
+  const finalCard =
+    document.getElementById("finalNameCard");
+
+  const backgrounds = [
+    "red-bg",
+    "blue-bg",
+    "green-bg",
+    "gold-bg"
+  ];
+
+  backgrounds.forEach(c =>
+    finalCard.classList.remove(c)
+  );
+
+  finalCard.classList.add(
+    backgrounds[
+      Math.floor(
+        Math.random() *
+        backgrounds.length
+      )
+    ]
+  );
+
+  const nextBtn =
+    document.getElementById("nextBtn");
+
+  if (
+    state.currentContestant >=
+    state.contestantCount
+  ) {
+    nextBtn.textContent = "Finish";
+  } else {
+    nextBtn.textContent =
+      "Next contestant";
+  }
+
+  showScreen(screens.final);
+}
+
+/* =========================================================
+   NEXT CONTESTANT
+========================================================= */
+
+document
+  .getElementById("nextBtn")
+  .addEventListener("click", () => {
+    if (
+      state.currentContestant >=
+      state.contestantCount
+    ) {
+      resetEverything();
+      return;
+    }
+
+    state.currentContestant++;
+
+    state.selectedCard = null;
+    state.wrongCard = null;
+    state.captureUsed = false;
+    state.revealed = false;
+    state.lastMotion = null;
+    state.shakeEnergy = 0;
+
+    showSecretSetup();
+  });
+
+/* =========================================================
+   RESTART
+========================================================= */
+
+document
+  .getElementById("restartBtn")
+  .addEventListener("click", () => {
+    resetEverything();
+  });
+
+function resetEverything() {
+  state.contestantCount = 1;
+  state.currentContestant = 1;
+  state.names = [];
+  state.selectedCard = null;
+  state.choiceCards = [];
+  state.performanceCards = [];
+  state.wrongCard = null;
+  state.captureUsed = false;
+  state.revealed = false;
+  state.lastMotion = null;
+  state.shakeEnergy = 0;
+
+  countButtons.forEach(button =>
+    button.classList.remove("selected")
+  );
+
+  countContinue.disabled = true;
+
+  showScreen(screens.home);
+}
+
+/* =========================================================
+   SHUFFLE BUTTON
+========================================================= */
+
+document
+  .getElementById("shuffleBtn")
+  .addEventListener("click", event => {
+    event.stopPropagation();
+
+    if (state.captureUsed) return;
+
+    buildPerformanceDeck();
+  });
+
+/* =========================================================
+   RESIZE
+   Only cards that haven't been moved are re-aligned.
+   Moved cards stay where the performer placed them.
+========================================================= */
+
+let resizeTimer = null;
+
+window.addEventListener("resize", () => {
+  clearTimeout(resizeTimer);
+
+  resizeTimer = setTimeout(() => {
+    if (screens.choice.classList.contains("active")) {
+      const cards =
+        [...choiceStage.querySelectorAll(".playing-card")];
+
+      const untouched =
+        cards.filter(
+          card =>
+            card.dataset.moved !== "true"
+        );
+
+      placeCardsInGrid(
+        choiceStage,
+        untouched
+      );
+    }
+
+    if (
+      screens.performance.classList.contains("active")
+    ) {
+      const cards =
+        [...performanceStage.querySelectorAll(".deck-card")];
+
+      const untouched =
+        cards.filter(
+          card =>
+            card.dataset.moved !== "true"
+        );
+
+      placeCardsInGrid(
+        performanceStage,
+        untouched
+      );
+    }
+  }, 120);
+});
+
+/* =========================================================
+   PREVENT LONG PRESS / CONTEXT MENU ON CARDS
+========================================================= */
+
+document.addEventListener(
+  "contextmenu",
+  event => {
+    if (
+      event.target.closest &&
+      (
+        event.target.closest(".playing-card") ||
+        event.target.closest(".deck-card")
+      )
+    ) {
+      event.preventDefault();
+    }
+  }
+);
+
+/* =========================================================
+   DESKTOP FALLBACK
+   Space reveals after the wrong card is shown.
+   Phone users still use the motion sensor.
+========================================================= */
+
+window.addEventListener("keydown", event => {
+  if (
+    event.code === "Space" &&
+    state.wrongCard &&
+    !state.revealed
+  ) {
+    event.preventDefault();
+    revealRealCard();
+  }
+});
+
+/* =========================================================
+   SECRET PERFORMER ACCESS
+   Shift + P on desktop.
+   Long press logo on mobile.
+========================================================= */
+
+let secretPressTimer = null;
+
+document.addEventListener("keydown", event => {
+  if (
+    event.shiftKey &&
+    event.key.toLowerCase() === "p"
+  ) {
+    console.log(
+      "8thhorseman performer mode is active."
+    );
+  }
+});
 
 const secretLogo =
-    document.getElementById(
-        "secretLogo"
-    );
-
-
-let logoTimer =
-    null;
-
+  document.getElementById("secretLogo");
 
 secretLogo.addEventListener(
-    "pointerdown",
-    () => {
+  "pointerdown",
+  event => {
+    event.preventDefault();
 
-        logoTimer =
-            setTimeout(
-                () => {
-
-                    createSetup();
-
-                    showScreen(
-                        screens.setup
-                    );
-
-                },
-                1300
-            );
-
-    }
-);
-
-
-secretLogo.addEventListener(
-    "pointerup",
-    () => {
-
-        clearTimeout(
-            logoTimer
+    secretPressTimer =
+      setTimeout(() => {
+        /*
+          Secret setup is already part of the normal flow.
+          This gesture simply exposes the performer hint
+          without creating a visible popup.
+        */
+        console.log(
+          "Performer: remember the secret name shown during setup."
         );
-
-    }
+      }, 1300);
+  },
+  { passive: false }
 );
 
+["pointerup", "pointercancel", "pointerleave"]
+  .forEach(type => {
+    secretLogo.addEventListener(type, () => {
+      clearTimeout(secretPressTimer);
+    });
+  });
 
-secretLogo.addEventListener(
-    "pointercancel",
-    () => {
+/* =========================================================
+   INITIAL STATE
+========================================================= */
 
-        clearTimeout(
-            logoTimer
-        );
-
-    }
-);
-
-
-secretLogo.addEventListener(
-    "pointerleave",
-    () => {
-
-        clearTimeout(
-            logoTimer
-        );
-
-    }
-);
-
-
-/* ==================================================
-   CONTEXT MENU
-================================================== */
-
-document.addEventListener(
-    "contextmenu",
-    event => {
-
-        if (
-            event.target.closest(
-                ".card"
-            ) ||
-            event.target.closest(
-                ".choice-card"
-            ) ||
-            event.target.closest(
-                ".deck-card"
-            )
-        ) {
-
-            event.preventDefault();
-
-        }
-
-    }
-);
-
-
-/* ==================================================
-   INITIALIZE
-================================================== */
-
-createNumberButtons();
-
+showScreen(screens.home);
 </script>
 
 </body>
